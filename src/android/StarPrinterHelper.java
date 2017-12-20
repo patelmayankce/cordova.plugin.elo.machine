@@ -201,7 +201,7 @@ public class StarPrinterHelper {
         Bitmap image = create3inchRasterReceiptImage(text_to_print);
 
         builder.beginDocument();
-        builder.appendBitmap(image, false);
+        builder.appendBitmap(image, false, PAPER_SIZE_THREE_INCH, true);
         builder.appendUnitFeed(64);
         builder.appendCutPaper(CutPaperAction.PartialCutWithFeed);
         builder.appendUnitFeed(64);
