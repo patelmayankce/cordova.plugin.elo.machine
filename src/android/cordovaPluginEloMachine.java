@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.content.Context;
 
+import java.util.ArrayList;
+
 import com.elo.device.DeviceManager;
 import com.elo.device.ProductInfo;
 import com.elo.device.enums.Status;
@@ -117,11 +119,11 @@ public class cordovaPluginEloMachine extends CordovaPlugin {
 
     private void openCashDrawer(CallbackContext callbackContext) {
         try {
-            if(is_device_payoint_2_0()) {
+            if (is_device_payoint_2_0()) {
                 StarPrinterHelper.open_drawer(m_StarIoExtMan, context, mCallback);
-              } else {
+            } else {
                 deviceManager.getCashDrawer().open();
-              }
+            }
             callbackContext.success("success");
         } catch (Exception e) {
             callbackContext.error(e.toString());
@@ -144,7 +146,7 @@ public class cordovaPluginEloMachine extends CordovaPlugin {
     private String getPrintData(String printText) {
 
         ArrayList<Byte> dataArray = new ArrayList<Byte>();
-        dataArray.addAll(AlignCenter());
+        // dataArray.addAll(AlignCenter());
         dataArray.addAll(toByteArray(printText)); //Prints the Text
 
         String response = dataArray.toString();
@@ -159,4 +161,14 @@ public class cordovaPluginEloMachine extends CordovaPlugin {
         return Result;
     }
 
+    private ArrayList<Byte> toByteArray(String string) {
+        ArrayList<Byte> list = new ArrayList<Byte>();
+        for (byte byt : string.getBytes()) {
+            list.add(Byte.valueOf(byt));
+        }
+        // line feed
+        list.add(Byte.valueOf((byte) 0x0A));
+        list.add(Byte.valueOf((byte) 0x0D));
+        return list;
+    }
 }
