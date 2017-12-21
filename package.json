@@ -1,6 +1,6 @@
 {
     "name": "cordova.plugin.elo.machine",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "This plugin provides elo machine integration for Android.",
     "cordova": {
         "id": "cordova.plugin.elo.machine",

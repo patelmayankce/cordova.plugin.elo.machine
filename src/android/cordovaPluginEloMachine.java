@@ -117,7 +117,11 @@ public class cordovaPluginEloMachine extends CordovaPlugin {
 
     private void openCashDrawer(CallbackContext callbackContext) {
         try {
-            deviceManager.getCashDrawer().open();
+            if(is_device_payoint_2_0()) {
+                StarPrinterHelper.open_drawer(m_StarIoExtMan, context, mCallback);
+              } else {
+                deviceManager.getCashDrawer().open();
+              }
             callbackContext.success("success");
         } catch (Exception e) {
             callbackContext.error(e.toString());
@@ -128,11 +132,31 @@ public class cordovaPluginEloMachine extends CordovaPlugin {
         try {
             if (is_device_payoint_2_0()) {
                 StarPrinterHelper.print(printText, m_StarIoExtMan, context, mCallback);
+            } else {
+                deviceManager.getPrinter().print(getPrintData(printText));
             }
             callbackContext.success("success");
         } catch (Exception e) {
             callbackContext.error(e.toString());
         }
+    }
+
+    private String getPrintData(String printText) {
+
+        ArrayList<Byte> dataArray = new ArrayList<Byte>();
+        dataArray.addAll(AlignCenter());
+        dataArray.addAll(toByteArray(printText)); //Prints the Text
+
+        String response = dataArray.toString();
+
+        String[] byteValues = response.substring(1, response.length() - 1).split(",");
+        byte[] bytes = new byte[byteValues.length];
+
+        for (int i = 0, len = bytes.length; i < len; i++) {
+            bytes[i] = Byte.parseByte(byteValues[i].trim());
+        }
+        String Result = new String(bytes);
+        return Result;
     }
 
 }
